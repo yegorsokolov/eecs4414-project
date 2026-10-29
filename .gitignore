@@ -3,3 +3,8 @@ __pycache__/
 .venv/
 .tools/
 data/soc-redditHyperlinks-*.tsv
+data/processed*/
+data/.network-*/
+role-a-handoff.zip
+/report/
+/report_content.json

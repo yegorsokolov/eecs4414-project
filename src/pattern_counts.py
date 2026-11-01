@@ -11,6 +11,9 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 REQUIRED_COLUMNS = {"SOURCE_SUBREDDIT", "TARGET_SUBREDDIT", "TIMESTAMP", "LINK_SENTIMENT"}
+# Role A's data/processed/edges.csv uses these names instead (comma-separated).
+PROCESSED_COLUMNS = {"source": "SOURCE_SUBREDDIT", "target": "TARGET_SUBREDDIT",
+                     "timestamp": "TIMESTAMP", "sentiment": "LINK_SENTIMENT"}
 PATTERNS = ("reciprocal", "repeated", "outward", "converging", "chain")
 
 
@@ -25,7 +28,12 @@ def load_negative_events(path):
     opener = gzip.open if path.suffix == ".gz" else open
     events = []
     with opener(path, "rt", encoding="utf-8-sig", newline="") as stream:
-        reader = csv.DictReader(stream, delimiter="\t")
+        header = stream.readline()
+        stream.seek(0)
+        delimiter = "," if header.count(",") > header.count("\t") else "\t"
+        reader = csv.DictReader(stream, delimiter=delimiter)
+        if delimiter == "," and set(PROCESSED_COLUMNS) <= set(reader.fieldnames or []):
+            reader.fieldnames = [PROCESSED_COLUMNS.get(c, c) for c in reader.fieldnames]
         missing = REQUIRED_COLUMNS - set(reader.fieldnames or [])
         if missing:
             raise ValueError(f"Missing columns: {', '.join(sorted(missing))}")

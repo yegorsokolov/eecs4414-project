@@ -1,0 +1,23 @@
+{
+  "links": 858488,
+  "negative_links": 82210,
+  "nodes": 67180,
+  "reciprocity": {
+    "events_reciprocated": 0.11647001581316141,
+    "distinct_pairs_reciprocated": 0.06742773864464416,
+    "negative_events": 82210,
+    "distinct_negative_pairs": 41170
+  },
+  "powerlaw_all": {
+    "alpha": 2.216241569430495,
+    "kmin": 476,
+    "n_tail": 563,
+    "ks": 0.029758254313412336
+  },
+  "powerlaw_negative": {
+    "alpha": 1.760235356107144,
+    "kmin": 5,
+    "n_tail": 2865,
+    "ks": 0.016889599307013545
+  }
+}

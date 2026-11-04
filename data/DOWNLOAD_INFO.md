@@ -36,5 +36,5 @@ https://github.com/snap-stanford/roland/blob/master/get_roland_public_data.sh
 The body file matches SNAP's published MD5. The title MD5 was rechecked as part
 of the full run. `src/prepare_network.py` processes both raw files into
 `data/processed/`; policy, hashes, raw and cleaned counts are in its manifest.
-The report folder retains a small copy of that manifest and the statistics.
-The raw body TSV and generated CSVs are local files ignored by Git.
+The verified `data/processed/` dataset and its manifest are tracked in Git.
+The raw body TSV and additional processing reruns remain local and ignored.

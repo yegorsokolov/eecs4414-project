@@ -1,0 +1,3 @@
+# Preserve dataset bytes so manifest checksums stay valid on every platform.
+/data/processed/** -text
+/data/processed/manifest.json text eol=lf

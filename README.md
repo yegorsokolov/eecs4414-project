@@ -59,13 +59,20 @@ The new pipeline is separate from `reddit_summary.py`, whose raw-data behavior i
 unchanged. Both use the Python standard library only.
 
 ```powershell
-python src/prepare_network.py --title data/soc-redditHyperlinks-title.tsv --body data/soc-redditHyperlinks-body.tsv --output data/processed
 python src/verify_network.py data/processed
+python src/prepare_network.py --title data/soc-redditHyperlinks-title.tsv --body data/soc-redditHyperlinks-body.tsv --output data/processed_rerun
 python -m unittest discover -s tests -v
 ```
 
-The output directory must not already exist. Use a new directory for a rerun.
-Inputs can also be `.tsv.gz`. Large raw and generated CSV files are ignored by Git.
+The verified cleaned dataset is included in `data/processed/`, ready for the
+concentration, temporal-pattern and prediction scripts. It contains the complete
+858,488-event table, 82 monthly sign layers, pair counts, statistics, a 10,000-event
+development sample and the checksum manifest. Dataset bytes are preserved by
+`.gitattributes`, so checksum verification is independent of checkout platform.
+
+The preparation command above regenerates the dataset into a separate directory;
+its output directory must not already exist. Inputs can also be `.tsv.gz`.
+Raw extracted TSVs and additional `data/processed*` reruns remain ignored by Git.
 
 - `edges.csv`: time-ordered directed events, retaining `post_id`, sign and provenance.
 - `snapshots/YYYY-MM_negative.csv` and `..._nonnegative.csv`: disjoint monthly sign layers.

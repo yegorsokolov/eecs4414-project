@@ -1,7 +1,6 @@
 # Conflict Cascades in Reddit Communities
 
-EECS 4414 group project investigating recurring patterns of negative interactions
-between Reddit communities using the SNAP Reddit Hyperlink Network.
+Investigating recurring patterns of negative interactions between Reddit communities using the SNAP Reddit Hyperlink Network.
 
 ## Setup
 

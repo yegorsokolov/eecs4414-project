@@ -24,7 +24,10 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from prediction_setup import load_edges
+try:  # run as a script: python src/concentration.py ...
+    from prediction_setup import load_edges
+except ImportError:  # imported as a package module, e.g. in tests: src.concentration
+    from src.prediction_setup import load_edges
 
 KS = (1, 5, 10)
 COLORS = {"all": "#0072B2", "neg": "#D55E00"}
@@ -144,6 +147,9 @@ def fig_monthly(mon, path):
     h1, l1 = ax.get_legend_handles_labels(); h2, l2 = ax2.get_legend_handles_labels()
     ax.set_ylim(0, mon["negative_links"].max() * 1.45)
     ax.legend(h1 + h2, l1 + l2, frameon=False, fontsize=7, loc="upper left", ncol=1)
+    import matplotlib.dates as mdates
+    ax.xaxis.set_major_locator(mdates.MonthLocator(bymonth=(1, 7)))  # Jan and Jul only
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m"))
     fig.autofmt_xdate(rotation=30); fig.tight_layout(); fig.savefig(path); plt.close(fig)
 
 

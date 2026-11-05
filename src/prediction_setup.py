@@ -20,6 +20,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -47,7 +48,9 @@ def load_edges(path: str) -> pd.DataFrame:
         df = pd.read_parquet(p)
     else:
         sep = "\t" if (p.endswith(".tsv") or p.endswith(".tsv.gz")) else ","
-        df = pd.read_csv(p, sep=sep)
+        header = pd.read_csv(p, sep=sep, nrows=0).columns
+        wanted = [n for names in ALIASES.values() for n in names if n in header]
+        df = pd.read_csv(p, sep=sep, usecols=wanted)  # skip post_id, provenance, PROPERTIES
     rename = {}
     for canon, names in ALIASES.items():
         hit = next((n for n in names if n in df.columns), None)
@@ -98,7 +101,12 @@ def _key(a: np.ndarray, b: np.ndarray, n: int) -> np.ndarray:
 
 
 def candidates_and_labels(e: pd.DataFrame, t: pd.Timestamp, n: int):
-    """Return (candidate_keys, label_array, n_neg_events_in_horizon, n_covered)."""
+    """Candidates and labels for one cut-off T.
+
+    Returns (candidate_keys, labels, n_neg_pairs, n_covered): the sorted int64 pair
+    keys, a boolean label per candidate, the number of distinct ordered pairs with a
+    negative link in [T, T+7d), and how many of those pairs are candidates.
+    """
     ts = e["ts"].to_numpy()
     lo, mid, hi = (np.searchsorted(ts, np.datetime64(x), side="left") for x in (t - LOOKBACK, t, t + HORIZON))
     past, fut = e.iloc[lo:mid], e.iloc[mid:hi]
@@ -141,6 +149,7 @@ def main():
     a = ap.parse_args()
     e = encode(load_edges(a.edges))
     summ = build_summary(e)
+    Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     summ.to_csv(a.out)
     pd.set_option("display.float_format", "{:,.3f}".format)
     pd.set_option("display.width", 200)

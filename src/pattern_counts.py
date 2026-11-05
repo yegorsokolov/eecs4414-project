@@ -18,7 +18,8 @@ PATTERNS = ("reciprocal", "repeated", "outward", "converging", "chain")
 
 
 def load_negative_events(path):
-    """Read a .tsv or .tsv.gz file and return its negative events as tuples.
+    """Read a raw SNAP .tsv/.tsv.gz file or Role A's edges.csv and return its
+    negative events as tuples.
 
     Each event is (source, target, timestamp). Repeated events are kept. Rows with
     label 1 are skipped. A negative self-link raises ValueError because the
@@ -48,7 +49,7 @@ def load_negative_events(path):
                     raise ValueError("label must be -1 or 1")
                 timestamp = datetime.strptime(row["TIMESTAMP"], "%Y-%m-%d %H:%M:%S")
             except (ValueError, TypeError, AttributeError) as exc:
-                raise ValueError(f"Invalid TSV row {line}: {exc}") from exc
+                raise ValueError(f"Invalid row {line}: {exc}") from exc
             if sentiment != -1:
                 continue
             if source == target:
@@ -175,7 +176,7 @@ def write_csv(results, path):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("input", type=Path, help="Reddit hyperlink .tsv or .tsv.gz file")
+    parser.add_argument("input", type=Path, help="raw SNAP .tsv/.tsv.gz file or data/processed/edges.csv")
     parser.add_argument("--deltas", type=int, nargs="+", default=[1, 3, 7],
                         help="window lengths in days (default: 1 3 7)")
     parser.add_argument("--csv", type=Path, help="optional CSV output path")

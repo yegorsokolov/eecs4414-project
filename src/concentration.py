@@ -126,7 +126,7 @@ def fig_conc(conc, path):
     for i, r in conc.iterrows():
         ax.text(i, 100 * max(r["share_all_links"], r["share_negative_links"]) + 2, f"$R_k$={r['R_k']:.2f}", ha="center", fontsize=7)
     ax.set_xticks(x, [f"Top {k}%" for k in conc["k_percent"]])
-    ax.set_ylabel("Links touching the group (%)"); ax.set_ylim(0, 135)
+    ax.set_ylabel("Links touching the group (%)"); ax.set_ylim(0, 155)
     ax.legend(frameon=False, loc="upper center", fontsize=7, ncol=1)
     fig.tight_layout(); fig.savefig(path); plt.close(fig)
 
@@ -140,7 +140,7 @@ def fig_monthly(mon, path):
     ax.set_ylabel("Negative links per month"); ax.set_xlabel("Month")
     ax2 = ax.twinx(); ax2.spines["right"].set_visible(True)
     ax2.plot(x, mon["negative_share_pct"], color=COLORS["neg"], lw=1.2, ls="--", label="Share of links (%)")
-    ax2.set_ylabel("Negative share (%)"); ax2.grid(False)
+    ax2.set_ylabel("Negative share (%)"); ax2.set_ylim(0, 16); ax2.grid(False)
     h1, l1 = ax.get_legend_handles_labels(); h2, l2 = ax2.get_legend_handles_labels()
     ax.set_ylim(0, mon["negative_links"].max() * 1.45)
     ax.legend(h1 + h2, l1 + l2, frameon=False, fontsize=7, loc="upper left", ncol=1)

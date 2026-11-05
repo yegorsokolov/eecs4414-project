@@ -1,0 +1,16 @@
+delta_days,pattern,pairs,distinct_followups
+1,reciprocal,114,113
+1,repeated,141,138
+1,outward,111057,26578
+1,converging,39278,21936
+1,chain,13517,9669
+3,reciprocal,243,240
+3,repeated,2250,2201
+3,outward,336498,38564
+3,converging,106175,34950
+3,chain,39997,19776
+7,reciprocal,512,468
+7,repeated,6333,5700
+7,outward,783340,47216
+7,converging,238184,45298
+7,chain,93072,29106

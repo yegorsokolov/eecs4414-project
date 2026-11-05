@@ -1,0 +1,3 @@
+event_id,source,target,post_id,timestamp,sentiment,provenance
+9,theredlion,soccer,1u4qkd,2013-12-31 18:18:37,-1,body
+22,subredditdrama,nfl,1u58yq,2013-12-31 21:59:32,-1,title
